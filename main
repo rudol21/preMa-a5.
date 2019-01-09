@@ -1,0 +1,77 @@
+TITLE MASM Template						(main.asm)
+
+INCLUDE Irvine32.inc
+.data
+Matica DW 5,14,7,9,9
+	   DW 2,4,4,5,7
+	   DW 3,8,8,7,4
+cislo DW 1 dup(?),0
+
+
+.code
+main PROC
+	call Clrscr
+	mov eax,0
+	mov ebx,0
+	call ReadChar
+	mov bl,al
+	mov cislo,bx
+	sub cislo,48
+
+	mov edi,-1
+	mov ecx,15
+	mov bx,cislo
+	Cyklus:
+	inc edi
+	cmp bx,Matica[edi*2]
+	je suradnice
+	
+	loop Cyklus
+	jmp Koniec
+	suradnice:
+	cmp edi,5
+	jb prvyRiadok
+	cmp edi,10
+	jb druhyRiadok
+	mov eax,3
+	call WriteInt
+	mov al,0Ah
+	call WriteChar
+	mov eax,edi
+	sub eax,9
+	call WriteInt
+	mov al,0Ah
+	call WriteChar
+	dec ecx
+	jmp Cyklus
+	
+	druhyRiadok:
+	mov eax,2
+	call WriteInt
+	mov al,0Ah
+	call WriteChar
+	mov eax,edi
+	sub eax,4
+	call WriteInt
+	mov al,0Ah
+	call WriteChar
+	dec ecx
+	jmp Cyklus
+
+	prvyRiadok:
+	mov eax,1
+	call WriteInt
+	mov al,0Ah
+	call WriteChar
+	mov eax,edi
+	add eax,1
+	call WriteInt
+	mov al,0Ah
+	call WriteChar
+	dec ecx
+	jmp Cyklus
+	Koniec:
+	exit
+main ENDP
+
+END main
